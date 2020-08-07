@@ -1,0 +1,170 @@
+
+<html>
+  <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+      <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  </head>
+  
+  <div>
+  <nav class="navbar navbar-light" style="background-color: #3399FF;margin-bottom:0px">
+        <a class="navbar-brand" style="color:white;padding-left: 36px;font-size: 25px;">WaterBox
+        </a>
+      </nav>
+      </div>
+      <div id="map"></div>
+      <div id="wrapper">
+    
+          <!-- Sidebar -->
+          <nav class="navbar navbar-fixed-top" id="sidebar-wrapper"  style="background-color:#F2F2F2;margin-top:52px;">
+              <ul class="nav sidebar-nav">
+                  <li style="margin-top:20px">
+                      <a href="#"><i class="fa fa-globe" style="display:inline;padding-right: 10px;color:#3399FF"></i>地圖資訊</a>
+                  </li>
+                  <li>
+                      <a href="#"><p style="font-weight: bold;display:inline;padding-right: 5px;color:darkgreen">pH</p>酸鹼色值表</a>
+                  </li>
+                  <li>
+                      <a href="#"><i class="fa fa-clipboard"style="display:inline;padding-right: 7px;color:red"></i>電解對照表</a>
+                  </li>
+              </ul>
+          </nav>
+          <!-- /#sidebar-wrapper -->
+          <!-- Page Content -->
+          <div id="page-content-wrapper">
+              <button type="button" class="hamburger is-closed" data-toggle="offcanvas" >
+                  <span class="hamb-top" style="background-color:white;margin-left: 70px;"></span>
+                  <span class="hamb-middle" style="background-color:white;margin-left: 70px;"></span>
+                  <span class="hamb-bottom" style="background-color:white;margin-left: 70px;"></span>
+              </button>
+              
+          </div>
+          <!-- /#page-content-wrapper -->
+  
+      </div>
+      <!-- /#wrapper -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <body>
+    <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0gJ3jmbuzudfCerqW2Cqbtb_9POph7sk&callback=initMap">
+  </script>
+  </body>
+  
+  </html>
+  
+  <script>
+    $(document).ready(function () {
+      $('[data-toggle="offcanvas"]').click(function () {
+          $('#wrapper').toggleClass('toggled');
+      });
+  });
+  </script>
+  
+  <script>
+    
+    function initMap() {
+      var uluru = {lat: 25.0501101, lng: 121.5255337};   //初始化地圖經緯度
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,     //放大倍率
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position:uluru,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+        map: map
+      });
+      var marker1 = new google.maps.Marker({
+        position: {lat: 25.0500000, lng: 120.5150337},
+        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        //animation: google.maps.Animation.DROP,
+        map: map
+      });
+      var infowindow = new google.maps.InfoWindow({
+        content: '<h1>我很勇</h1>',
+        position: {lat: 25.0500000, lng: 120.5150337},
+        maxWidth:200,
+        //pixelOffset: new google.maps.Size(100, -20) 
+      });
+      marker.addListener('click',function(){
+        infowindow.open(map, marker);
+      });
+    }
+  </script>
+  <style>
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+  a{
+    font-size: 17px;
+    color:black
+  }
+  li{
+    padding-left: 50px;
+    padding-top: 10px;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    /*toggled時寬度由零變到220*/
+    width: 220px;
+  }
+  
+  #sidebar-wrapper {
+  z-index: 1000;
+  left: 220px;
+  width: 0;
+  height: 100%;
+  margin-left: -220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  }
+  
+  
+  .hamburger {
+  position: fixed;
+  top: 13px;
+  z-index: 999;
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin-left: 100px;
+  background: transparent;
+  border: none;
+  }
+  
+  .hamburger:hover,
+  .hamburger:focus,
+  .hamburger:active {
+  outline: none;
+  }
+  
+  
+  .hamburger.is-closed .hamb-top,
+  .hamburger.is-closed .hamb-middle,
+  .hamburger.is-closed .hamb-bottom,
+  .hamburger.is-open .hamb-top,
+  .hamburger.is-open .hamb-middle,
+  .hamburger.is-open .hamb-bottom {
+  position: absolute;
+  height: 3px;
+  width: 100%;
+  }
+  
+  .hamburger.is-closed .hamb-top {
+  top: 4px;
+  }
+  
+  .hamburger.is-closed .hamb-middle {
+  top: 50%;
+  margin-top: -2px;
+  }
+  
+  .hamburger.is-closed .hamb-bottom {
+  bottom: 5px;
+  }
+  </style>
+  
