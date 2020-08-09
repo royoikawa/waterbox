@@ -12,7 +12,10 @@
     </a>
   </nav>
 </div>
-<div id="map"></div>
+<div id="ph" style="text-align: center;">
+    <img src="images/ph.jpeg">
+    <p>圖片來源:http://www.umarket.com.tw/ugC_Faq.asp?hidCatID=11&hidFaqID=125</p>
+</div>
 <div id="wrapper">
 
   <!-- Sidebar -->
@@ -48,11 +51,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-<body>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0gJ3jmbuzudfCerqW2Cqbtb_9POph7sk&callback=initMap">
-    </script>
-</body>
+
 
 </html>
 
@@ -62,46 +61,6 @@
       $('#wrapper').toggleClass('toggled');
     });
   });
-</script>
-
-<script>
-
-  function initMap() {
-    var uluru = { lat: 25.0501101, lng: 121.5255337 };   //初始化地圖經緯度
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 8,     //放大倍率
-      center: uluru
-    });
-    //地圖標點
-    var marker = new google.maps.Marker({
-      position: uluru,
-      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      map: map
-    });
-    var marker1 = new google.maps.Marker({
-      position: { lat: 25.0500000, lng: 120.5150337 },
-      icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-      //animation: google.maps.Animation.DROP,
-      map: map
-    });
-    //地圖標記資訊視窗
-    var infowindow = new google.maps.InfoWindow({
-      content: '<p>酸鹼值:</p><p>導電度:</p><p>電壓</p><p>電流:</p><button id="btn" class="btn">近日變化</button>',
-      position: { lat: 25.0500000, lng: 120.5150337 },
-      maxWidth: 200,
-      //pixelOffset: new google.maps.Size(100, -20) 
-    });
-    infowindow.addListener('domready',function(){     //近日變化按鈕
-      var btn = document.getElementById('btn');
-      btn.addEventListener('click',function(){
-        alert('aaa');
-      });
-    });
-    //點下標記打開資訊視窗
-    marker.addListener('click', function () {
-      infowindow.open(map, marker);
-    });
-  }
 </script>
 <style>
   #map {
