@@ -8,4 +8,8 @@ router.get('/', function(req, res, next) {
 router.get('/ph', function(req, res, next) {
   res.render('ph_table');
 });
+router.get('/chart',function(req, res, next){
+  console.log(req.query.chart);
+  res.render('chart',{'query':req.query.chart});
+})
 module.exports = router;
