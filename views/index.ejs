@@ -60,7 +60,9 @@
         　<option value="mA">電流</option>
       </select>
     </div>
-    <iframe id="iframe"src="/chart?chart=ph"></iframe>
+    <div class="iframe-container">
+    <iframe  frameborder="no"  id="iframe"src="/chart?chart=ph"></iframe>
+    </div>
   </div>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0gJ3jmbuzudfCerqW2Cqbtb_9POph7sk&callback=initMap">
@@ -69,6 +71,10 @@
 
 </html>
 
+<script src="javascripts/ph.js"></script>
+<script src="javascripts/us.js"></script>
+<script src="javascripts/v.js"></script>
+<script src="javascripts/mA.js"></script>
 <script>
   $(document).ready(function () {
     $('[data-toggle="offcanvas"]').click(function () {
@@ -97,7 +103,7 @@
 <script>
 
   function initMap() {
-    var uluru = { lat: 25.0501101, lng: 121.5255337 };   //初始化地圖經緯度
+    var uluru = { lat: 22.992972, lng: 121.059386 };   //初始化地圖經緯度
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 8,     //放大倍率
       center: uluru
@@ -105,18 +111,22 @@
     //地圖標點
     var marker = new google.maps.Marker({
       position: uluru,
-      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
       map: map
     });
     var marker1 = new google.maps.Marker({
       position: { lat: 25.0500000, lng: 120.5150337 },
-      icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
       //animation: google.maps.Animation.DROP,
       map: map
     });
     //地圖標記資訊視窗
     var infowindow = new google.maps.InfoWindow({
-      content: '<p>酸鹼值:</p><p>導電度:</p><p>電壓</p><p>電流:</p><button id="btn" class="btn">近日變化</button>',
+      content: '酸鹼值:'+feed[feed.length-1].field3+'<br><br>'+
+      '導電度:'+feeds2[feeds2.length-1].field2+'<br><br>'+
+      '電壓:'+feeds3[feeds3.length-1].field4+'<br><br>'+
+      '電流:'+feeds4[feeds4.length-1].field5+'<br><br>'+
+      '<button id="btn" class="btn">近日變化</button>',
       position: { lat: 25.0500000, lng: 120.5150337 },
       maxWidth: 200,
       //pixelOffset: new google.maps.Size(100, -20) 
@@ -135,9 +145,10 @@
 </script>
 <style>
   iframe{
-    width:85%;
-    height: 60%;
-    margin:20px 40px
+    width:90%;
+    height: 70%;
+    margin: 0 10px
+    
   }
   select {
     width: 150px;
@@ -280,4 +291,5 @@
     float: left;
     margin-top: 0px;
   }
+  
 </style>

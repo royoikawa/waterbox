@@ -1,15 +1,434 @@
-
+<html>
 <% if(query=='ph'){%>
-    <P>qq</P>
+<div id='<%=query%>' style="width: 480px; height: 220px; margin: 0 0"></div>
 <%}%>
 <% if(query=='us'){%>
-    <P>aa</P>
+<div id='<%=query%>' style="width: 480px; height: 220px; margin: 0 0"></div>
 <%}%>
 <% if(query=='v'){%>
-    <P>ss</P>
+<div id='<%=query%>' style="width: 480px; height: 220px; margin: 0 0"></div>
 <%}%>
 <% if(query=='mA'){%>
-    <P>qa</P>
+<div id='<%=query%>' style="width: 480px; height: 220px; margin: 0 0"></div>
 <%}%>
-<script>
+</html>
+    
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="javascripts/ph.js"></script>
+<script src="javascripts/us.js"></script>
+<script src="javascripts/v.js"></script>
+<script src="javascripts/mA.js"></script>
+<script language="JavaScript">
+    $(document).ready(function () {
+        var phdata=[]  
+        for (a=0;a<feed.length;a++){
+            var create_t = feed[a].created_at
+            y = create_t.substr(0,4)
+            m = create_t.substr(5,2)
+            d = create_t.substr(8,2)
+            h = create_t.substr(11,8)
+            time = y+"/"+m+"/"+d+" "+h
+            var common = (new Date(time)).getTime()//普通時間轉成unixstamp
+            phdata[a]=[common,parseFloat(feed[a].field3)]
+        }
+        var usdata=[]
+        for (a=0;a<feeds2.length;a++){
+            var create_t = feeds2[a].created_at
+            y = create_t.substr(0,4)
+            m = create_t.substr(5,2)
+            d = create_t.substr(8,2)
+            h = create_t.substr(11,8)
+            time = y+"/"+m+"/"+d+" "+h
+            var common = (new Date(time)).getTime()
+            usdata[a]=[common,parseFloat(feeds2[a].field2)]
+        }
+        var vdata=[]
+        for (a=0;a<feeds3.length;a++){
+            var create_t = feeds3[a].created_at
+            y = create_t.substr(0,4)
+            m = create_t.substr(5,2)
+            d = create_t.substr(8,2)
+            h = create_t.substr(11,8)
+            time = y+"/"+m+"/"+d+" "+h
+            var common = (new Date(time)).getTime()
+            vdata[a]=[common,parseFloat(feeds3[a].field4)]
+        }
+        var mAdata=[]
+        for (a=0;a<feeds4.length;a++){
+            var create_t = feeds4[a].created_at
+            y = create_t.substr(0,4)
+            m = create_t.substr(5,2)
+            d = create_t.substr(8,2)
+            h = create_t.substr(11,8)
+            time = y+"/"+m+"/"+d+" "+h
+            var common = (new Date(time)).getTime()
+            mAdata[a]=[common,parseFloat(feeds4[a].field5)]
+        }
+        if ($("div").attr("id") == 'ph') {
+            var chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+            var title = {
+                text: ""
+            };
+            var subtitle = {
+                text: 'Source: Heinz  2003'
+            };
+            var xAxis = {
+                type: 'datetime',
+                tickInterval: 24 * 3600 * 1000,
+                title: {
+                    text: 'date'
+                },
+                dateTimeLabelFormats: {
+                    day: '%Y-%m-%d'
+
+                },
+            };
+            var yAxis = {
+                title: {
+                    text: '酸鹼度pH'
+                },
+                //categories : [ '0', '7', '14' ],
+                labels: {
+                    step: '2',
+
+
+                }
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 60,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            }
+            var plotOptions = {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        //pointFormat: '{point.x} , {point.y} pH',
+                        pointFormatter: function () {
+                            var unixTimestamp = new Date(this.x);
+                            return '' + 'pH:' + this.y + '<br>' + unixTimestamp + ''
+                            //return ''+(this.x)/1000+','+this.y+''
+                        }
+                    }
+                }
+            };
+            //var aa = [[1527832563000, 2], [1527918791000, 7], [1528005191000, 4], [1528091591000, 12], [1528177991000, 1]],
+            var series = [{
+                name: '酸鹼度pH',
+                color: 'rgba(223, 83, 83, .5)',
+                data: phdata
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle; 
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#ph').highcharts(json);
+        }
+        else if ($("div").attr("id") == 'us') {
+            var chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+            var title = {
+                text: ""
+            };
+            var subtitle = {
+                text: 'Source: Heinz  2003'
+            };
+            var xAxis = {
+                type: 'datetime',
+                tickInterval: 24 * 3600 * 1000,
+                title: {
+                    text: 'date'
+                },
+                dateTimeLabelFormats: {
+                    day: '%Y-%m-%d'
+
+                },
+            };
+            var yAxis = {
+                title: {
+                    text: '導電度us'
+                },
+                //categories : [ '0', '7', '14' ],
+                labels: {
+                    step: '2',
+
+
+                }
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 60,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            }
+            var plotOptions = {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        //pointFormat: '{point.x} , {point.y} pH',
+                        pointFormatter: function () {
+                            var unixTimestamp = new Date(this.x);
+                            return '' + 'us:' + this.y + '<br>' + unixTimestamp + ''
+                            //return ''+(this.x)/1000+','+this.y+''
+                        }
+                    }
+                }
+            };
+            //var aa = [[1527832563000, 2], [1527918791000, 7], [1528005191000, 4], [1528091591000, 12], [1528177991000, 1]],
+            var series = [{
+                name: '導電度us',
+                color: 'rgba(223, 83, 83, .5)',
+                data: usdata
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle; 
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#us').highcharts(json);
+        }
+        else if ($("div").attr("id") == 'v'){
+            var chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+            var title = {
+                text: ""
+            };
+            var subtitle = {
+                text: 'Source: Heinz  2003'
+            };
+            var xAxis = {
+                type: 'datetime',
+                tickInterval: 24 * 3600 * 1000,
+                title: {
+                    text: 'date'
+                },
+                dateTimeLabelFormats: {
+                    day: '%Y-%m-%d'
+
+                },
+            };
+            var yAxis = {
+                title: {
+                    text: '電壓v'
+                },
+                //categories : [ '0', '7', '14' ],
+                labels: {
+                    step: '2',
+
+
+                }
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 60,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            }
+            var plotOptions = {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        //pointFormat: '{point.x} , {point.y} pH',
+                        pointFormatter: function () {
+                            var unixTimestamp = new Date(this.x);
+                            return '' + 'v:' + this.y + '<br>' + unixTimestamp + ''
+                            //return ''+(this.x)/1000+','+this.y+''
+                        }
+                    }
+                }
+            };
+            //var aa = [[1527832563000, 2], [1527918791000, 7], [1528005191000, 4], [1528091591000, 12], [1528177991000, 1]],
+            var series = [{
+                name: '電壓v',
+                color: 'rgba(223, 83, 83, .5)',
+                data: vdata
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle; 
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#v').highcharts(json);
+        }
+        else if ($("div").attr("id") == 'mA'){
+            var chart = {
+                type: 'scatter',
+                zoomType: 'xy'
+            };
+            var title = {
+                text: ""
+            };
+            var subtitle = {
+                text: 'Source: Heinz  2003'
+            };
+            var xAxis = {
+                type: 'datetime',
+                tickInterval: 24 * 3600 * 1000,
+                title: {
+                    text: 'date'
+                },
+                dateTimeLabelFormats: {
+                    day: '%Y-%m-%d'
+
+                },
+            };
+            var yAxis = {
+                title: {
+                    text: '電流mA'
+                },
+                //categories : [ '0', '7', '14' ],
+                labels: {
+                    step: '2',
+
+
+                }
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 100,
+                y: 60,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                borderWidth: 1
+            }
+            var plotOptions = {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        //pointFormat: '{point.x} , {point.y} pH',
+                        pointFormatter: function () {
+                            var unixTimestamp = new Date(this.x);
+                            return '' + 'mA:' + this.y + '<br>' + unixTimestamp + ''
+                            //return ''+(this.x)/1000+','+this.y+''
+                        }
+                    }
+                }
+            };
+            //var aa = [[1527832563000, 2], [1527918791000, 7], [1528005191000, 4], [1528091591000, 12], [1528177991000, 1]],
+            var series = [{
+                name: '電流mA',
+                color: 'rgba(223, 83, 83, .5)',
+                data: mAdata
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            //json.subtitle = subtitle; 
+            json.legend = legend;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#mA').highcharts(json);
+        }
+
+    });
 </script>
